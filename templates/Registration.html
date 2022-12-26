@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/styles.css') }}">
+    <title>Registration</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Latest compiled JavaScript -->
+    
+</head>
+<body>
+    <div id="particles-js">
+      <div class="content-wrapper">
+        <div class="navbar-container">
+          <!-- starting of navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark  navbar-custom">
+          <div class="container-fluid">
+            <a class="navbar-brand nav-text" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Pricing</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+        <!-- ending of navbar -->
+        <div class="heading-wrapper"> <h1 class="page-header">Register Here!!</h1></div>
+        <div class="forum-container">
+          <!-- starting of registration form -->
+          <form class="row g-3 needs-validation " novalidate action="/Reg_submit" method="post">
+            <div class="col-md-6 ">
+              <label for="validationCustom01" class="form-label">First name :</label>
+              <input type="text" class="form-control" id="validationCustom01" minlength="3" placeholder="Your First Name" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="validationCustom02" class="form-label">Last name :</label>
+              <input type="text" class="form-control" id="validationCustom02" placeholder="Your Last Name" minlength="3" required>
+              <div class="valid-feedback">
+                Looks good!
+              </div>
+            </div>
+            <div class="row-md">
+              <label for="validationCustomUsername" class="form-label">User Name : </label>
+              <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                <div class="valid-feedback feedback-pos">
+                  Looks good!
+                </div>
+                <div class="invalid-feedback feedback-pos">
+                  Please input valid email ID
+                </div>
+              </div>
+            </div>
+            <div class="row-md">
+              <label for="validationCustomEmail" class="form-label">Email :</label>
+              <div class="input-group has-validation">
+                <input type="email" class="form-control" id="validationCustomEmail" placeholder=" Your Email" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <div class="invalid-feedback">
+                  Please choose a username.
+                </div>
+              </div>
+            </div>
+            <div class="row-md">
+              <label for="validationCustomAadhar" class="form-label">Aadhar Number :</label>
+              <input type="number" class="form-control" id="validationCustomAadhar" placeholder="Enter Aadhar Number" maxLength="12" min="100000000000" max="999999999999" required>
+              <small id="emailHelp" class="form-text text-muted">We'll never share your Aadhar Number with anyone else.</small>
+              <div class="invalid-feedback">
+                Please provide a valid Aadhar.
+              </div>
+            </div>
+            <div class="col-md-6 ">
+              <label for="validationCustom01" class="form-label">Create Password :</label>
+              <input type="password" class="form-control" id="validationCustom01" minlength="8" maxlength="16" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" required>
+              <div class="valid-feedback feedback-pos">
+                Looks good!
+              </div>
+              <div class="invalid-feedback feedback-pos">
+                password should contain :
+                <ul>
+                  <li>At least 1 Uppercase</li>
+                  <li>At least 1 Lowercase</li>
+                  <li>At least 1 Number</li>
+                  <li>At least 1 Symbol, symbol allowed  ! @ # $ % ^ & * _ = + -  </li>
+                  <li>Min 8 chars and Max 16 chars</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="validationCustom03" class="form-label">City :</label>
+              <input type="Text" class="form-control" id="validationCustom03" required>
+              <div class="invalid-feedback">
+                Please provide a valid City.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="validationCustom04" class="form-label">State :</label>
+              <select class="form-select" id="validationCustom04" required>
+                <option selected disabled value="">Choose...</option>
+                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                <option value="Assam">Assam</option>
+                <option value="Bihar">Bihar</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Chhattisgarh">Chhattisgarh</option>
+                <option value="Dadar and Nagar Haveli">Dadar and Nagar Haveli</option>
+                <option value="Daman and Diu">Daman and Diu</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Lakshadweep">Lakshadweep</option>
+                <option value="Puducherry">Puducherry</option>
+                <option value="Goa">Goa</option>
+                <option value="Gujarat">Gujarat</option>
+                <option value="Haryana">Haryana</option>
+                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                <option value="Jharkhand">Jharkhand</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Manipur">Manipur</option>
+                <option value="Meghalaya">Meghalaya</option>
+                <option value="Mizoram">Mizoram</option>
+                <option value="Nagaland">Nagaland</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Punjab">Punjab</option>
+                <option value="Rajasthan">Rajasthan</option>
+                <option value="Sikkim">Sikkim</option>
+                <option value="Tamil Nadu">Tamil Nadu</option>
+                <option value="Telangana">Telangana</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="Uttarakhand">Uttarakhand</option>
+                <option value="West Bengal">West Bengal</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a valid state.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="validationCustom05" class="form-label">Zip :</label>
+              <input type="number" class="form-control" id="validationCustom05" placeholder="Your Zip Code" min="100000" max="999999" maxLength="6" required>
+              <div class="invalid-feedback">
+                Please provide a valid zip.
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                  Agree to terms and conditions
+                </label>
+                <div class="invalid-feedback">
+                  You must agree before submitting.
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-outline-primary">Submit Form</button>
+            </div>
+          </form>
+          <!-- end of registration form -->
+          </div>
+      </div>
+    </div>
+    <!-- script linking for styling & -->
+    <script src="static/Particles/particles.js"></script>
+    <script src="static/Particles/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="static/Particles/validate.js"></script>
+    <!-- script linking -->
+</body>
+</html>
