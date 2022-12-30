@@ -3,7 +3,7 @@ app=Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('Admin.html')
+    return render_template('Index.html')
 
 @app.route('/Admin')
 def Admin():
@@ -16,6 +16,10 @@ def Registrationpythom ():
 @app.route('/Login')
 def Login():
     return render_template('Login.html')
+
+@app.route('/Transaction')
+def Transaction():
+    return render_template('Transaction.html')
 
 '''@app.route('/Reg_submit',methods=['POST','GET'])
 def Reg_submit():

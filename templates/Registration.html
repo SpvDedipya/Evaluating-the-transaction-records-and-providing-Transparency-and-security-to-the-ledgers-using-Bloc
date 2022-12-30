@@ -20,20 +20,17 @@
           <!-- starting of navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark  navbar-custom">
           <div class="container-fluid">
-            <a class="navbar-brand nav-text" href="#">Navbar</a>
+            <a class="navbar-brand nav-text" href="/"><img class="nav-icon" src="https://i.postimg.cc/4xBjc1yk/Cryptogram.png" alt="#" /></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Features</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Pricing</a>
+                  <a class="nav-link" href="Login">Login</a>
                 </li>
               </ul>
             </div>
@@ -63,21 +60,23 @@
               <label for="validationCustomUsername" class="form-label">User Name : </label>
               <div class="input-group has-validation">
                 <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" minlength="5" required>
+                <br>
                 <div class="valid-feedback feedback-pos">
                   Looks good!
                 </div>
                 <div class="invalid-feedback feedback-pos">
-                  Please input valid user name.
+                  Please input valid user name with atleast 5 characters.
                 </div>
               </div>
             </div>
             <div class="row-md">
               <label for="validationCustomEmail" class="form-label">Email :</label>
               <div class="input-group has-validation">
-                <input type="email" class="form-control" id="validationCustomEmail" placeholder=" Your Email" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <input type="email" class="form-control" id="validationCustomEmail" placeholder="Enter Amount" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <br>
                 <div class="invalid-feedback">
-                  Please choose a valid Email.
+                  Please enter amount.<br>
                 </div>
               </div>
             </div>
