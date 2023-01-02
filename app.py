@@ -13,6 +13,31 @@ app.config['MYSQL_PASSWORD'] = ''#password
 #in my case password is null so i am keeping empty
 app.config['MYSQL_DB'] = 'blockchain'#database name
 
+
+@app.route('/')
+def home():
+    return render_template('Index.html')
+
+@app.route('/Admin')
+def Admin():
+    return render_template('Admin.html')
+
+@app.route('/Registration')
+def Registrationpythom ():
+    return render_template('Registration.html')
+
+@app.route('/Login')
+def Login():
+    return render_template('Login.html')
+
+@app.route('/Transaction')
+def Transaction():
+    return render_template('Transaction.html')
+
+'''@app.route('/Reg_submit',methods=['POST','GET'])
+def Reg_submit():
+    if request.method=='POST':'''
+
 mysql = MySQL(app)
 
 @app.route('/')
@@ -51,32 +76,33 @@ def projectreg():
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('Registration.html', msg=msg)
-if __name__ == '__main__':
-    app.run(port=5000,debug=True)
+    if __name__ == '__main__':
+        app.run(port=5000,debug=True)
 
 @app.route('/')
-def home():
-    return render_template('Index.html')
-
-@app.route('/Admin')
-def Admin():
-    return render_template('Admin.html')
-
-@app.route('/Registration')
-def Registrationpythom ():
-    return render_template('Registration.html')
-
-@app.route('/Login')
-def Login():
-    return render_template('Login.html')
-
-@app.route('/Transaction')
-def Transaction():
-    return render_template('Transaction.html')
-
-'''@app.route('/Reg_submit',methods=['POST','GET'])
-def Reg_submit():
-    if request.method=='POST':'''
+@app.route('/Login',methods=['GET','POST'])
+def projectlogin():
+    msg=''
+    #applying empty validation
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form :
+        #passing HTML form data into python variable
+        
+        email= request.form['email']
+        password = request.form['password']
+        #creating variable for connection
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        #query to check given data is present in database or no
+        cursor.execute('SELECT * FROM details WHERE email = % s', (email,))
+        #fetching data from MySQL
+        result = cursor.fetchone()
+        if result:
+            msg = 'Success'
+        else:
+            #executing query to insert new data into MySQL
+            msg="register"
+    return render_template('Login.html', msg=msg)
+    if __name__ == '__main__':
+        app.run(port=5000,debug=True)
 
 
 if __name__=='__main__':
