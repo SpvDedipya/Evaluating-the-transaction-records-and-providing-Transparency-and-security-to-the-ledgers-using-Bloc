@@ -1,4 +1,4 @@
-from flask import Flask,redirect,url_for,render_template,request
+from flask import Flask,redirect,url_for,render_template,request,flash
 #import libraries
 from flask import *
 from flask import Flask, render_template, request
@@ -6,6 +6,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
 app=Flask(__name__)
+
 
 #code for connection
 app.config['MYSQL_HOST'] = 'localhost'#hostname
