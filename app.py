@@ -97,10 +97,17 @@ def projectlogin():
         #fetching data from MySQL
         result = cursor.fetchone()
         if result:
-            msg='Success'
+            cursor.execute('SELECT * FROM details WHERE email = % s and password=% s', (email,password))
+            #fetching data from MySQL
+            result1= cursor.fetchone()
+            if result1:
+                 msg='Success'
+            else:
+                msg="wrong password"
         else:
             #executing query to insert new data into MySQL
             msg="register"
+
     return render_template('Login.html', msg=msg)
     if __name__ == '__main__':
         app.run(port=5000,debug=True)
