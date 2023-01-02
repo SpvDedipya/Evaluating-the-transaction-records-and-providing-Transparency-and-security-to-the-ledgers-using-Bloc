@@ -41,17 +41,17 @@
         <div class="heading-wrapper"> <h1 class="page-header">Register Here!!</h1></div>
         <div class="forum-container">
           <!-- starting of registration form -->
-          <form class="row g-3 needs-validation " novalidate action="/Reg_submit" method="post">
+          <form class="row g-3 needs-validation " novalidate action="{{ url_for('projectreg') }}" method="post">
             <div class="col-md-6 ">
               <label for="validationCustom01" class="form-label">First name :</label>
-              <input type="text" class="form-control" id="validationCustom01" minlength="3" placeholder="Your First Name" required>
+              <input type="text" class="form-control" name="firstName"  id="validationCustom01" minlength="3" placeholder="Your First Name" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
             </div>
             <div class="col-md-6">
               <label for="validationCustom02" class="form-label">Last name :</label>
-              <input type="text" class="form-control" id="validationCustom02" placeholder="Your Last Name" minlength="3" required>
+              <input type="text" class="form-control" name="lastName" id="validationCustom02" placeholder="Your Last Name" minlength="3" required>
               <div class="valid-feedback">
                 Looks good!
               </div>
@@ -60,7 +60,7 @@
               <label for="validationCustomUsername" class="form-label">User Name : </label>
               <div class="input-group has-validation">
                 <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" minlength="5" required>
+                <input type="text" class="form-control" name="uname" id="validationCustomUsername" aria-describedby="inputGroupPrepend" minlength="5" required>
                 <br>
                 <div class="valid-feedback feedback-pos">
                   Looks good!
@@ -73,7 +73,7 @@
             <div class="row-md">
               <label for="validationCustomEmail" class="form-label">Email :</label>
               <div class="input-group has-validation">
-                <input type="email" class="form-control" id="validationCustomEmail" placeholder="Enter Amount" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <input type="email" class="form-control" name="email" id="validationCustomEmail" placeholder="Enter Amount" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                 <br>
                 <div class="invalid-feedback">
                   Please enter amount.<br>
@@ -82,7 +82,7 @@
             </div>
             <div class="row-md">
               <label for="validationCustomAadhar" class="form-label">Aadhar Number :</label>
-              <input type="number" class="form-control" id="validationCustomAadhar" placeholder="Enter Aadhar Number" maxLength="12" min="100000000000" max="999999999999" required>
+              <input type="number" class="form-control" name="aadhar" id="validationCustomAadhar" placeholder="Enter Aadhar Number" maxLength="12" min="100000000000" max="999999999999" required>
               <small id="emailHelp" class="form-text text-muted">We'll never share your Aadhar Number with anyone else.</small>
               <div class="invalid-feedback">
                 Please provide a valid Aadhar.
@@ -90,7 +90,7 @@
             </div>
             <div class="col-md-6 ">
               <label for="validationCustom01" class="form-label">Create Password :</label>
-              <input type="password" class="form-control" id="validationCustom01" minlength="8" maxlength="16" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" required>
+              <input type="password" class="form-control" name="password" id="validationCustom01" minlength="8" maxlength="16" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,16}$" required>
               <div class="valid-feedback feedback-pos">
                 Looks good!
               </div>
@@ -107,14 +107,14 @@
             </div>
             <div class="col-md-6">
               <label for="validationCustom03" class="form-label">City :</label>
-              <input type="Text" class="form-control" id="validationCustom03" required>
+              <input type="Text" class="form-control" name="city" id="validationCustom03" required>
               <div class="invalid-feedback">
                 Please provide a valid City.
               </div>
             </div>
             <div class="col-md-6">
               <label for="validationCustom04" class="form-label">State :</label>
-              <select class="form-select" id="validationCustom04" required>
+              <select class="form-select" id="validationCustom04" name="state" required>
                 <option selected disabled value="">Choose...</option>
                 <option value="Andhra Pradesh">Andhra Pradesh</option>
                 <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
@@ -159,9 +159,18 @@
             </div>
             <div class="col-md-6">
               <label for="validationCustom05" class="form-label">Zip :</label>
-              <input type="number" class="form-control" id="validationCustom05" placeholder="Your Zip Code" min="100000" max="999999" maxLength="6" required>
+              <input type="number" class="form-control" name="zip" id="validationCustom05" placeholder="Your Zip Code" min="100000" max="999999" maxLength="6" required>
               <div class="invalid-feedback">
                 Please provide a valid zip.
+              </div>
+            </div>
+            
+
+            <div class="col-md-6">
+              <label for="validationPkey" class="form-label">Public Key :</label>
+              <input type="Text" class="form-control" name="pkey" id="validationPkey" required>
+              <div class="invalid-feedback">
+                Please provide public key.
               </div>
             </div>
             <div class="col-12">
@@ -175,9 +184,12 @@
                 </div>
               </div>
             </div>
+
             <div class="col-12">
               <button type="submit" class="btn btn-outline-primary">Submit Form</button>
             </div>
+            {{msg}}
+            
           </form>
           <!-- end of registration form -->
           </div>

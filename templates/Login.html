@@ -43,11 +43,11 @@
           <h1 class="page-header">Login details!</h1>
         </div>
         <div class="login">
-          <form class="row g-3 needs-validation " novalidate action="/Reg_submit" method="post">
+          <form class="row g-3 needs-validation " novalidate action="{{ url_for('Login') }}" 	method="post">
             <div class="row-md">
               <label for="validationCustomEmail" class="form-label">Email :</label>
               <div class="input-group has-validation">
-                <input type="email" class="form-control" id="validationCustomEmail" placeholder=" Your Email" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                <input type="email" class="form-control" name="email" id="validationCustomEmail" placeholder=" Your Email" aria-describedby="inputGroupPrepend" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                 <div class="invalid-feedback">
                   Please choose a valid Email.
                 </div>
@@ -56,7 +56,7 @@
             <br>
             <div class="row-md ">
               <label for="validationCustom01" class="form-label">Password :</label>
-              <input type="password" class="form-control" id="validationCustom01" minlength="8" maxlength="16" placeholder="Password" required>
+              <input type="password" class="form-control" name="password" id="validationCustom01" minlength="8" maxlength="16" placeholder="Password" required>
               <div class="valid-feedback feedback-pos">
                 Looks good!
               </div>
@@ -65,8 +65,9 @@
               </div>
             </div>
             <br><br>
+            {{msg}}
             <div class="row-md">
-              <button type="submit" class="btn btn-outline-primary">Submit Form</button>
+              <button type="submit" class="btn btn-outline-primary" type="submit">Submit Form</button>
             </div>
           </form> 
       </div>
