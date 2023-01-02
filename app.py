@@ -1,5 +1,6 @@
 from flask import Flask,redirect,url_for,render_template,request
 #import libraries
+from flask import *
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -96,7 +97,7 @@ def projectlogin():
         #fetching data from MySQL
         result = cursor.fetchone()
         if result:
-            msg = 'Success'
+            msg='Success'
         else:
             #executing query to insert new data into MySQL
             msg="register"
