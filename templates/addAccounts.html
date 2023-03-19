@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Ganache Account Contract</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static',filename='Styles/styles.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <script>
+    const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
+    //paste contract address  in middle of double qoutes 
+    const contractAddress ="0xB49c4727802265e4E14Db33fEbB57d9654E905F0";//here
+    //paste abi here...
+    const abi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_accountAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			}
+		],
+		"name": "addAccount",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "recieveEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "add",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amt",
+				"type": "uint256"
+			}
+		],
+		"name": "transferEther",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getAccount",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllAccounts",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "showAccountNames",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+    const ganacheAccountContract = new web3.eth.Contract(abi, contractAddress);
+
+    async function addAccount() {
+        const accountAddress = document.getElementById("accountAddress").value;
+        const name = document.getElementById("name").value;
+        const aadharNumber = document.getElementById("aadharNumber").value;
+        const email = document.getElementById("email").value;
+      
+        // Check for duplicate address
+        const existingAccounts = await ganacheAccountContract.methods.getAllAccounts().call();
+        if (existingAccounts[0].includes(accountAddress)) {
+          //alert("Error: Account address already exists!");
+		  Swal.fire({
+			icon: 'warning',
+			title: 'failed to add account',
+			text: 'This Account already exists please try with new details !!',
+			showClass: {
+				popup: 'animate__animated animate__shakeX'
+			  },
+			  hideClass: {
+				popup: 'animate__animated animate__bounceOutDown'
+			  }
+		  });
+          return;
+        }
+
+		// Check for valid email
+		if (!email.includes("@")) {
+			//alert("Error: Email address is invalid!,please give correct format");
+			Swal.fire({
+				icon: 'question',
+				title: 'failed to add account',
+				text: 'Email address is invalid!,please give correct format',
+				showClass: {
+					popup: 'animate__animated animate__shakeX'
+				  },
+				  hideClass: {
+					popup: 'animate__animated animate__bounceOutDown'
+				  }
+			  });
+			return;
+		  }
+	
+      
+        // Check for duplicate email
+        if (existingAccounts[3].includes(email)) {
+          //alert("Error: Email address already exists!");
+		  Swal.fire({
+			icon: 'warning',
+			title: 'failed to add account',
+			text: 'This email already exists please try with new details !!',
+			showClass: {
+				popup: 'animate__animated animate__shakeX'
+			  },
+			  hideClass: {
+				popup: 'animate__animated animate__bounceOutDown'
+			  }
+		  });
+          return;
+        }
+      
+        // Check for valid Aadhaar number
+        if (aadharNumber.length !== 12) {
+          //alert("Error: Aadhaar number should be 12 digits long!");
+		  Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Aadhaar number should be 12 digits long!!',
+			showClass: {
+				popup: 'animate__animated animate__shakeX'
+			  },
+			  hideClass: {
+				popup: 'animate__animated animate__bounceOutDown'
+			  }
+		  });
+          return;
+        }
+      
+        // Check for duplicate Aadhaar number
+        if (existingAccounts[2].includes(aadharNumber)) {
+			Swal.fire({
+				icon: 'warning',
+				title: 'failed to add account',
+				text: 'This account already exists please try with new details !!',
+				showClass: {
+					popup: 'animate__animated animate__shakeX'
+				  },
+				  hideClass: {
+					popup: 'animate__animated animate__bounceOutDown'
+				  }
+			  });
+          return;
+        }
+      
+        try {
+          const accounts = await web3.eth.requestAccounts();
+          const from = accounts[0];
+          const tx = ganacheAccountContract.methods.addAccount(accountAddress, name, aadharNumber, email).send({ from });
+          const receipt = await tx;
+          //alert("Account added successfully!");
+		  Swal.fire({
+			icon: 'success',
+			title: 'Success !!',
+			text: 'Added account successfully !!',
+			showClass: {
+				popup: 'animate__animated animate__bounce'
+			  },
+			  hideClass: {
+				popup: 'animate__animated animate__backOutDown'
+			  }
+		  });
+        } catch (error) {
+          //alert("Error: " + error.message);
+		  Swal.fire({
+			icon: 'error',
+			title: 'Account Adding Failed!!',
+			text: error.message,
+			showClass: {
+				popup: 'animate__animated animate__shakeX'
+			  },
+			  hideClass: {
+				popup: 'animate__animated animate__bounceOutDown'
+			  }
+		  });
+        }
+      }
+      
+  </script>
+</head>
+<body>
+	<div id="particles-js">
+		<div class="content-wrapper">
+			<div class="container" style="color:white">
+				<h1 class="mt-5 mb-3">Ganache Account Contract</h1>
+				<form>
+				  <fieldset>
+					<legend>You can add Accounts here !...</legend>
+					<div class="form-group">
+					  <label for="accountAddress">Account Address</label>
+					  <input type="text" class="form-control" id="accountAddress" placeholder="Account Address">
+					</div>
+					<div class="form-group">
+					  <label for="name">Name</label>
+					  <input type="text" class="form-control" id="name" placeholder="Name">
+					</div>
+					<div class="form-group">
+					  <label for="aadharNumber">Aadhaar Number</label>
+					  <input type="text" class="form-control" id="aadharNumber" placeholder="Aadhaar Number">
+					</div>
+					<div class="form-group">
+					  <label for="email">Email</label>
+					  <input type="email" class="form-control" id="email" placeholder="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+					</div>
+				  </fieldset>
+				  <button type="button" class="btn btn-outline-info" onclick="addAccount()">Add Account</button>
+				</form>
+			  </div>
+		</div>
+	</div>
+	<script src="static/Particles/particles.js"></script>
+    <script src="static/Particles/app.js"></script>
+</body>
+</html>

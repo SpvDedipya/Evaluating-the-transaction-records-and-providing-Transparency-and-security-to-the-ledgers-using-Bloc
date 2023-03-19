@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Node Account Details</title>
+    <!-- import detectEthereumProvider and Web3 libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider@1.2.0/dist/detect-provider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+    <!-- import Bootstrap styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/styles.css') }}">
+    
+    <style>
+        .body{
+            color: white ;
+        }
+        .h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            color: white;
+            text-decoration: underline;
+        }
+    
+        .legend {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    
+        .fieldset {
+            border: 2px solid #ffffff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+    
+        .label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+    
+        /*.input[type="text"],
+        .input[type="number"] {
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 2px solid #ffffff;
+            background-color: #fff;
+            margin-bottom: 1rem;
+            color: #333;
+        }*/
+        .p{
+            color: #fff;
+        }
+    
+        .ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        #accounts li{
+            color: #fff;
+        }
+        #names li {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+    
+        #balance {
+            font-weight: bold;
+            color: #ffffff;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="particles-js">
+        <div class="content-wrapper">
+            <div class="body">
+                <div class="container">
+                    <h1 class="h1">Node Details</h1>
+                    <br>
+                    <form>
+                        <fieldset class="fieldset">
+                            <legend class="legend"><b>Get Account By Index</b></legend>
+                            <div class="form-group">
+                                <label for="index">Index:</label>
+                                <input class="form-control"  type="text" class="form-control" id="index">
+                            </div>
+                            <button type="button" class="btn btn-outline-info" onclick="getAccount()">Get</button>
+                            <p id="account"></p>
+                        </fieldset>
+                    </form>
+                    <br>
+                    <form>
+                        <fieldset class="fieldset">
+                            <legend class="legend" ><b>Get All Accounts</b></legend>
+                            <button type="button" class="btn btn-outline-info" onclick="getAllAccounts()">Get All</button>
+                            <ul id="accounts"></ul>
+                        </fieldset>
+                    </form>
+                    <br>
+                    <form>
+                        <fieldset class="fieldset">
+                            <legend class="legend"><b>Show Account Names</b></legend>
+                            <button type="button" class="btn btn-outline-info" onclick="showAccountNames()">Show Names</button>
+                            <ul id="names"></ul>
+                        </fieldset>
+                    </form>
+                    <br>
+                    
+                    <h1 class="h1">Transaction Field</h1>
+                    <br>
+                    <fieldset class="fieldset">
+                        <legend class="legend"><b>Send Ether</b></legend>
+                        <div class="form-group">
+                            <label for="from"><b>From Account</b> Address is:</label>
+                            <input class="form-control"  type="text" class="form-control" id="from">
+                            <p class="p"><b>From Account Balance is:</b><span id="balance"></span><b>ETH</b></p>
+                        </div>
+                        <div class="form-group">
+                            <label for="to"><b>To Account</b> Address Paste Here:</label>
+                            <input class="form-control"  type="text" class="form-control" id="to">
+                        </div>
+                        <div class="form-group">
+                            <label for="amount"><b>Amount or Ether Ξ</b> To Send:</label>
+                            <input class="form-control"  type="number" class="form-control" id="amount" min="0">
+                        </div>
+                        <br>
+                        <button class="btn btn-outline-info" onclick="transfer()"><b>Click On Transfer👆</b></button>
+                    </fieldset>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        // Connect to Ganache network 
+        if (typeof web3 !== 'undefined') { 
+            web3 = new Web3(window.ethereum); 
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545"));
+        }
+
+        // Print current network ID to console 
+        web3.eth.net.getId().then(function(result) { 
+            console.log('Connected to network with ID:', result); 
+        });
+
+        // Get contract instance
+        var contractABI = [
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "_accountAddress",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_name",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_aadharNumber",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "_email",
+                    "type": "string"
+                }
+            ],
+            "name": "addAccount",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "recieveEther",
+            "outputs": [],
+            "stateMutability": "payable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address payable",
+                    "name": "add",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amt",
+                    "type": "uint256"
+                }
+            ],
+            "name": "transferEther",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getAccount",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getAllAccounts",
+            "outputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "",
+                    "type": "address[]"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "",
+                    "type": "string[]"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "",
+                    "type": "string[]"
+                },
+                {
+                    "internalType": "string[]",
+                    "name": "",
+                    "type": "string[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "showAccountNames",
+            "outputs": [
+                {
+                    "internalType": "string[]",
+                    "name": "",
+                    "type": "string[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ] ;
+    // contract address 
+    var contractAddress = "0xB49c4727802265e4E14Db33fEbB57d9654E905F0";
+    // create contract instance
+    var contract = new web3.eth.Contract(contractABI, contractAddress);
+
+    
+    //function to get account by index
+    function getAccount() {
+        var index = document.getElementById("index").value;
+    
+        if (index < 0) {
+            //alert("Invalid index⚠!!,please give the correct index value.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid index ⚠ !!',
+                text: "please give the correct index value.",
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__bounceOutDown'
+                  }
+              });
+            return;
+        }
+    
+        contract.methods.getAccount(index).call()
+            .then(function(result) {
+                if (result[0] === null) {
+                    //alert("No account found☹ in the network for this index.");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No account found ☹!!',
+                        text: "please try with the other index.",
+                        showClass: {
+                            popup: 'animate__animated animate__shakeX'
+                          },
+                          hideClass: {
+                            popup: 'animate__animated animate__bounceOutDown'
+                          }
+                      });
+                    return;
+                }
+                console.log(result);
+                document.getElementById("account").innerHTML = "ADDRESS OF THE ACCOUNT HOLDER🪪=>" + result[0] + " & ACCOUNT HOLDER NAME =>  " + result[1];
+                document.getElementById("from").value = result[0];
+                getBalance(result[0]);
+            })
+            .catch(function(error) {
+                //alert("No account found☹ in the network for this index.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No account found ☹ !!',
+                    text: "please try with the other index.",
+                    footer:"check console for other details...",
+                    showClass: {
+                        popup: 'animate__animated animate__shakeX'
+                      },
+                      hideClass: {
+                        popup: 'animate__animated animate__bounceOutDown'
+                      }
+                  });
+                console.error(error);
+            });
+    }
+    
+    
+
+// function to get all accounts
+function getAllAccounts() {
+    contract.methods.getAllAccounts().call()
+    .then(function(result) {
+        //alert(JSON.stringify(result));
+        Swal.fire({
+            text: JSON.stringify(result),
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__bounceOutDown'
+              }
+          });
+        var accountsList = document.getElementById("accounts");
+        accountsList.innerHTML = "";
+
+        for (var i = 0; i < result.length; i++) {
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode("Name: " + result[i][0] + ", Address: " + result[i][1]));
+            accountsList.appendChild(li);
+        }
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+
+
+//show all names
+function showAccountNames() {
+    contract.methods.showAccountNames().call()
+        .then(function(result) {
+        //alert(result);
+        Swal.fire({
+            text: "Available account names : "+result,
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__bounceOutDown'
+              }
+          });
+        });
+}
+
+
+
+// function to get account balance
+function getBalance(account) {
+    web3.eth.getBalance(account)
+    .then(function(result) {
+        console.log(result);
+        document.getElementById("balance").innerHTML = web3.utils.fromWei(result, "ether");
+    })
+    .catch(function(error) {
+        console.error(error);
+    });
+}
+
+
+
+// function to transfer ether
+function transfer() {
+    var to = document.getElementById("to").value;
+    var amount = document.getElementById("amount").value;
+    var from = document.getElementById("from").value;
+
+    if (from === to) {
+        //alert("Sorry!☹Can't transfer ether to the same account!!");
+        Swal.fire({
+            icon:"question",
+            text: "Sorry! ☹  Can't transfer ether to the same account!!",
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__bounceOutDown'
+              }
+          });
+        return;
+    }
+
+    web3.eth.sendTransaction({
+        from: from,
+        to: to,
+        value: web3.utils.toWei(amount, "ether")
+    })
+    .then(function(result) {
+        console.log(result);
+        Swal.fire({
+            icon:"success",
+            text: "Transaction Successful !!",
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__bounceOutDown'
+              }
+          });
+        getBalance(from);
+    })
+    .catch(function(error) {
+        //alert("Authorization is not done⚠for the From address, please give access to it");
+        Swal.fire({
+            icon:"warning",
+            text: "Authorization is not done⚠for the From address, please give access to it",
+            showClass: {
+                popup: 'animate__animated animate__backInUp'
+              },
+              hideClass: {
+                popup: 'animate__animated animate__bounceOutDown'
+              }
+          });
+        console.error(error);
+    });
+}
+
+
+// set default account
+web3.eth.getAccounts()
+.then(function(result) {
+    web3.eth.defaultAccount = result[0];
+    getBalance(web3.eth.defaultAccount);
+})
+.catch(function(error) {
+    console.error(error);
+});
+
+
+</script>
+    <!-- import Bootstrap scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="static/Particles/particles.js"></script>
+    <script src="static/Particles/app.js"></script>
+</body>
+</html>

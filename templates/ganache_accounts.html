@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ganache Accounts</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='Styles/ganache_account.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+<body>
+    <div id="particles-js">
+        <div class="content-wrapper">
+            <div class="body">
+                <h1 class="h1">List of Ganache Accounts</h1>
+        <ul class="ul" id="ganache-accounts"></ul>
+    
+        <script>
+            // Create a Web3 object connected to your local Ganache instance
+            const web3 = new Web3("http://localhost:7545");
+    
+            // Fetch the accounts from Ganache
+            web3.eth.getAccounts().then(async accounts => {
+                const ganacheAccountsList = document.getElementById("ganache-accounts");
+    
+                // Loop through the accounts and add them to the list
+                for (let i = 0; i < accounts.length; i++) {
+                    const li = document.createElement("li");
+                    li.classList.add("li");
+                    const address = accounts[i];
+    
+                    // Add address field
+                    const addressHeading = document.createElement("h2");
+                    addressHeading.textContent = "Address";
+                    addressHeading.classList.add("h4");
+                    li.appendChild(addressHeading);
+    
+                    const addressSpan = document.createElement("span");
+                    addressSpan.textContent = address;
+                    addressSpan.classList.add("span");
+                    li.appendChild(addressSpan);
+    
+                    // Add balance field
+                    const balanceHeading = document.createElement("h4");
+                    balanceHeading.textContent = "Balance";
+                    balanceHeading.classList.add("h4");
+                    li.appendChild(balanceHeading);
+    
+                    const balance = await web3.eth.getBalance(address);
+                    const etherBalance = web3.utils.fromWei(balance, "ether");
+    
+                    const balanceSpan = document.createElement("span");
+                    balanceSpan.classList.add("span");
+                    balanceSpan.textContent = `${etherBalance} ETH`;
+    
+                    li.appendChild(balanceSpan);
+    
+                    // Add copy button
+                    //const copyButtonHeading = document.createElement("h2");
+                    //copyButtonHeading.textContent = "Copy Address here";
+                    //li.appendChild(copyButtonHeading);
+    
+                    const copyButton = document.createElement("button");
+                    copyButton.textContent = "Copy Addtress";
+                    copyButton.classList.add("button");
+                    copyButton.addEventListener("click", async () => {
+                        try {
+                            await navigator.permissions.query({name: "clipboard-write"});
+                            await navigator.clipboard.writeText(address);
+                            Swal.fire({
+                                title: 'Address copied to clipboard!!',
+                                showClass: {
+                                  popup: 'animate__animated animate__backInDown'
+                                },
+                                hideClass: {
+                                  popup: 'animate__animated animate__backOutDown'
+                                }
+                              })
+                            //alert(`Address ${address} copied to clipboard!`);
+                        } catch (error) {
+                            console.error("Failed to copy:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'failed to copy',
+                                showClass: {
+                                    popup: 'animate__animated animate__shakeX'
+                                  },
+                                  hideClass: {
+                                    popup: 'animate__animated animate__bounceOutDown'
+                                  }
+                              });
+                        }
+                    });
+                    li.appendChild(copyButton);
+    
+                    ganacheAccountsList.appendChild(li);
+                }
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Something went wrong!',
+                    text: 'Try Opening ganache in background',
+                    showClass: {
+                        popup: 'animate__animated animate__shakeX'
+                      },
+                      hideClass: {
+                        popup: 'animate__animated animate__bounceOutDown'
+                      }
+                  });
+                console.log("Error fetching accounts:", error);
+            });
+        </script>
+            </div>
+        </div>
+    </div>
+    <script src="static/Particles/particles.js"></script>
+    <script src="static/Particles/app.js"></script>
+</body>
+</html>

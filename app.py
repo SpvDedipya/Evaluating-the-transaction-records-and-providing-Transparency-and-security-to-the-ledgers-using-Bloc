@@ -24,6 +24,10 @@ def home():
 def Admin():
     return render_template('Admin.html')
 
+@app.route('/adLogin')
+def AdLogin():
+    return render_template('adLogin.html')
+
 @app.route('/Registration')
 def Registrationpythom ():
     return render_template('Registration.html')
@@ -35,6 +39,21 @@ def Login():
 @app.route('/Transaction')
 def Transaction():
     return render_template('Transaction.html')
+
+@app.route('/ethTrasaction')#eth transactions page...
+def EthTransaction():
+    return render_template('eth_transactions.html')
+
+@app.route('/addAccounts')#adding accounts in blockchain...
+def AddAccounts():
+    return render_template('addAccounts.html')
+
+@app.route('/viewGanacheAccounts')#listing ganacche accounts...
+def ViewAccounts():
+    return render_template('ganache_accounts.html')
+
+
+
 
 '''@app.route('/Reg_submit',methods=['POST','GET'])
 def Reg_submit():
