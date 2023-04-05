@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Ganache Account Contract</title>
+  <title>Enroll Account</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static',filename='Styles/styles.css') }}">
@@ -12,7 +12,7 @@
     <script>
     const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
     //paste contract address  in middle of double qoutes 
-    const contractAddress ="0xB49c4727802265e4E14Db33fEbB57d9654E905F0";//here
+    const contractAddress ="0x77fb2c6e5dC63b026F172ee032BB8cEB17Da52EC";//here
     //paste abi here...
     const abi = [
 	{
@@ -54,12 +54,12 @@
 		"inputs": [
 			{
 				"internalType": "address payable",
-				"name": "add",
+				"name": "receiver",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "amt",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -107,14 +107,14 @@
 				"type": "string[]"
 			},
 			{
-				"internalType": "string[]",
+				"internalType": "bytes32[]",
 				"name": "",
-				"type": "string[]"
+				"type": "bytes32[]"
 			},
 			{
-				"internalType": "string[]",
+				"internalType": "bytes32[]",
 				"name": "",
-				"type": "string[]"
+				"type": "bytes32[]"
 			}
 		],
 		"stateMutability": "view",
@@ -128,6 +128,40 @@
 				"internalType": "string[]",
 				"name": "",
 				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_accountAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			}
+		],
+		"name": "verifyAccount",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

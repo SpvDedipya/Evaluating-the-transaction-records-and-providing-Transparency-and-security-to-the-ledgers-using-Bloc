@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Node Account Details</title>
+    <title>Transactions</title>
     <!-- import detectEthereumProvider and Web3 libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider@1.2.0/dist/detect-provider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
@@ -145,6 +145,8 @@
     
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript">
+
+
         // Connect to Ganache network 
         if (typeof web3 !== 'undefined') { 
             web3 = new Web3(window.ethereum); 
@@ -159,127 +161,161 @@
 
         // Get contract instance
         var contractABI = [
-        {
-            "inputs": [
-                {
-                    "internalType": "address",
-                    "name": "_accountAddress",
-                    "type": "address"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_name",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_aadharNumber",
-                    "type": "string"
-                },
-                {
-                    "internalType": "string",
-                    "name": "_email",
-                    "type": "string"
-                }
-            ],
-            "name": "addAccount",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "recieveEther",
-            "outputs": [],
-            "stateMutability": "payable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "address payable",
-                    "name": "add",
-                    "type": "address"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "amt",
-                    "type": "uint256"
-                }
-            ],
-            "name": "transferEther",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "_index",
-                    "type": "uint256"
-                }
-            ],
-            "name": "getAccount",
-            "outputs": [
-                {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                },
-                {
-                    "internalType": "string",
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "getAllAccounts",
-            "outputs": [
-                {
-                    "internalType": "address[]",
-                    "name": "",
-                    "type": "address[]"
-                },
-                {
-                    "internalType": "string[]",
-                    "name": "",
-                    "type": "string[]"
-                },
-                {
-                    "internalType": "string[]",
-                    "name": "",
-                    "type": "string[]"
-                },
-                {
-                    "internalType": "string[]",
-                    "name": "",
-                    "type": "string[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "showAccountNames",
-            "outputs": [
-                {
-                    "internalType": "string[]",
-                    "name": "",
-                    "type": "string[]"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
-    ] ;
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_accountAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			}
+		],
+		"name": "addAccount",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "recieveEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "receiver",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferEther",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getAccount",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllAccounts",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "",
+				"type": "bytes32[]"
+			},
+			{
+				"internalType": "bytes32[]",
+				"name": "",
+				"type": "bytes32[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "showAccountNames",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_accountAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_aadharNumber",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_email",
+				"type": "string"
+			}
+		],
+		"name": "verifyAccount",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
     // contract address 
-    var contractAddress = "0xB49c4727802265e4E14Db33fEbB57d9654E905F0";
+    var contractAddress = "0x77fb2c6e5dC63b026F172ee032BB8cEB17Da52EC";
     // create contract instance
     var contract = new web3.eth.Contract(contractABI, contractAddress);
 
@@ -310,7 +346,7 @@
                     //alert("No account found☹ in the network for this index.");
                     Swal.fire({
                         icon: 'warning',
-                        title: 'No account found ☹!!',
+                        title: 'No account found !!',
                         text: "please try with the other index.",
                         showClass: {
                             popup: 'animate__animated animate__shakeX'
@@ -330,7 +366,7 @@
                 //alert("No account found☹ in the network for this index.");
                 Swal.fire({
                     icon: 'warning',
-                    title: 'No account found ☹ !!',
+                    title: 'No account found  !!',
                     text: "please try with the other index.",
                     footer:"check console for other details...",
                     showClass: {
@@ -415,52 +451,86 @@ function transfer() {
     var amount = document.getElementById("amount").value;
     var from = document.getElementById("from").value;
 
-    if (from === to) {
-        //alert("Sorry!☹Can't transfer ether to the same account!!");
-        Swal.fire({
-            icon:"question",
-            text: "Sorry! ☹  Can't transfer ether to the same account!!",
-            showClass: {
-                popup: 'animate__animated animate__backInUp'
-              },
-              hideClass: {
-                popup: 'animate__animated animate__bounceOutDown'
-              }
-          });
-        return;
-    }
-
-    web3.eth.sendTransaction({
-        from: from,
-        to: to,
-        value: web3.utils.toWei(amount, "ether")
-    })
+    // Get all accounts
+    contract.methods.getAllAccounts().call()
     .then(function(result) {
-        console.log(result);
-        Swal.fire({
-            icon:"success",
-            text: "Transaction Successful !!",
-            showClass: {
-                popup: 'animate__animated animate__backInUp'
-              },
-              hideClass: {
-                popup: 'animate__animated animate__bounceOutDown'
-              }
-          });
-        getBalance(from);
+        var accounts = [];
+        for (var i = 0; i < Object.keys(result).length; i++) {
+            accounts = accounts.concat(result[i]);
+        }
+
+        // Check if the To address is present in the accounts
+        if (!accounts.includes(to) ) {
+            //alert("Sorry!☹️The To address is not present in the accounts.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Account not found !!',
+                text: "please make sure that From and To Accounts present in network.",
+                showClass: {
+                    popup: 'animate__animated animate__backInUp'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__bounceOutDown'
+                  }
+              });
+            return;
+        }
+
+        // Proceed with the transfer
+        if (from === to) {
+            //alert("Sorry!☹️Can't transfer ether to the same account!!");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Transaction Failed',
+                text: "From and To cannot be same.",
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__bounceOutDown'
+                  }
+              });
+            return;
+        }
+
+        web3.eth.sendTransaction({
+            from: from,
+            to: to,
+            value: web3.utils.toWei(amount, "ether")
+        })
+        .then(function(result) {
+            console.log(result);
+            getBalance(from);
+            //alert("Transaction is successful!🎉");
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!!',
+                text: `Transaction is successful.`,
+                showClass: {
+                    popup: 'animate__animated animate__backInUp'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__bounceOutDown'
+                  }
+              });
+        })
+        .catch(function(error) {
+            //alert("Transaction is failed (or) May be the From Address is not Authorized well");
+            Swal.fire({
+                icon: 'warning',
+                title: 'Failed',
+                text: `May be the From Address is not Authorized well`,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                  },
+                  hideClass: {
+                    popup: 'animate__animated animate__bounceOutDown'
+                  }
+              });
+            console.error(error);
+        });
     })
     .catch(function(error) {
-        //alert("Authorization is not done⚠for the From address, please give access to it");
-        Swal.fire({
-            icon:"warning",
-            text: "Authorization is not done⚠for the From address, please give access to it",
-            showClass: {
-                popup: 'animate__animated animate__backInUp'
-              },
-              hideClass: {
-                popup: 'animate__animated animate__bounceOutDown'
-              }
-          });
         console.error(error);
     });
 }

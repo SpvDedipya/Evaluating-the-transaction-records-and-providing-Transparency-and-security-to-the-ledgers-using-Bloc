@@ -12,6 +12,7 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://kit.fontawesome.com/b4c31984ab.js" crossorigin="anonymous"></script>
     
+    
 </head>
 <body>
     <div id="particles-js">
@@ -30,7 +31,7 @@
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/">Logout</a>
+                    <a class="nav-link" href="/logout">Logout</a>
                   </li>
                 </ul>
               </div>
@@ -45,6 +46,7 @@
         <a href="/addAccounts" class="btn-grad">Add Accounts</a>
         <a href="/viewGanacheAccounts" target="_blank" class="btn-grad">View Accounts</a>
         <a href="/ethTrasaction" target="_blank" class="btn-grad">ETH transfer</a>
+        <a href="/verify" target="_blank" class="btn-grad">Verify Account</a>
       </div>
       <div class="sidebar-menu">
         <button class="btn btn-outline-primary btn-nav" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i class="fa fa-solid fa-bars"></i></button>
@@ -66,5 +68,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static',filename='Particles/validate.js') }}"></script>
     <!-- script linking -->
+    
 </body>
 </html>

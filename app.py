@@ -1,18 +1,32 @@
-from flask import Flask,redirect,url_for,render_template,request,flash
+from flask import Flask,redirect,url_for,render_template,request,flash,session,g
 #import libraries
-from flask import *
+# from flask import *
+from flask_login import LoginManager, UserMixin, login_user, current_user, logout_user
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+import os
+import datetime
 
 app=Flask(__name__)
 
+#Sessions
+app.secret_key = os.urandom(24)
+app.permanent_session_lifetime = datetime.timedelta(minutes=10)
+
+#Executes before session activity (USED MIDDLEWARE)
+@app.before_request
+def before_request():
+    g.user = None
+ 
+    if 'user' in session:
+        g.user = session['user']
 
 #code for connection
 app.config['MYSQL_HOST'] = 'localhost'#hostname
 app.config['MYSQL_USER'] = 'root'#username
 app.config['MYSQL_PASSWORD'] = ''#password
-#in my case password is null so i am keeping empty
+#in my case password is null so i am keeping emptycd .venv
 app.config['MYSQL_DB'] = 'blockchain'#database name
 
 
@@ -22,11 +36,13 @@ def home():
 
 @app.route('/Admin')
 def Admin():
-    return render_template('Admin.html')
-
-@app.route('/adLogin')
-def AdLogin():
+    if 'admin' in session and session['admin']:
+        return render_template('Admin.html')
     return render_template('adLogin.html')
+
+# @app.route('/adLogin')
+# def AdLogin():
+#     return render_template('adLogin.html')
 
 @app.route('/Registration')
 def Registrationpythom ():
@@ -42,15 +58,41 @@ def Transaction():
 
 @app.route('/ethTrasaction')#eth transactions page...
 def EthTransaction():
-    return render_template('eth_transactions.html')
+    if g.user or 'admin' in session and session['admin']:
+        return render_template('eth_transactions.html')
+    return render_template('Login.html')
 
 @app.route('/addAccounts')#adding accounts in blockchain...
 def AddAccounts():
-    return render_template('addAccounts.html')
+    if 'admin' in session and session['admin']:
+        return render_template('addAccounts.html')
+    return render_template('adLogin.html')
 
 @app.route('/viewGanacheAccounts')#listing ganacche accounts...
 def ViewAccounts():
-    return render_template('ganache_accounts.html')
+    if g.user or 'admin' in session and session['admin']:
+        return render_template('ganache_accounts.html')
+    return render_template('Login.html')
+
+@app.route('/userDashboard')#listing ganacche accounts...
+def userDashboard():
+    if g.user:
+        return render_template('user.html')
+    return render_template('Login.html')
+@app.route('/verify')#verifying accounts
+def verify():
+    if 'admin' in session and session['admin']:
+        return render_template('account_verify.html')
+    return render_template('adLogin.html')
+
+@app.route('/dropsession')#dropping session
+def dropsession():
+    session.pop('user',None)
+    return render_template('Login.html')
+@app.route('/logout')
+def logout():
+    session.pop('admin', None)
+    return redirect(url_for('adLogin'))
 
 
 
@@ -88,12 +130,13 @@ def projectreg():
         result = cursor.fetchone()
         if result:
             msg = 'Account already exists !'
+            return redirect("/Login")
         else:
             #executing query to insert new data into MySQL
             cursor.execute('INSERT INTO details (firstName, lastName, email, uname, aadhar, password, city, state,zip,pkey) VALUES (% s,% s,% s,% s,% s,% s,% s,% s,% s,% s)', (firstName, lastName, email, uname, aadhar, password, city, state,zip,pkey))
             mysql.connection.commit()
             #displaying message
-            msg = 'You have successfully registered !'
+            msg = 'Successfully registered go to Login!'
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('Registration.html', msg=msg)
@@ -107,7 +150,7 @@ def projectlogin():
     #applying empty validation
     if request.method == 'POST' and 'email' in request.form and 'password' in request.form :
         #passing HTML form data into python variable
-        
+        session.pop('user',None)
         email= request.form['email']
         password = request.form['password']
         #creating variable for connection
@@ -121,7 +164,9 @@ def projectlogin():
             #fetching data from MySQL
             result1= cursor.fetchone()
             if result1:
-                 msg='Success'
+                 msg='Successful'
+                 session['user'] = request.form['email']
+                 return redirect("/userDashboard")
             else:
                 msg="wrong password"
         else:
@@ -132,6 +177,20 @@ def projectlogin():
     if __name__ == '__main__':
         app.run(port=5000,debug=True)
 
+#admin Login
+
+@app.route('/adLogin', methods=['GET', 'POST'])
+def adLogin():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'admin' and password == 'admin':
+            session['admin'] = True
+            return redirect(url_for('Admin'))
+        else:
+            return render_template('adLogin.html', message="Invalid credentials. Please try again.")
+    else:
+        return render_template('adLogin.html')
 
 if __name__=='__main__':
     app.run(debug=True)
